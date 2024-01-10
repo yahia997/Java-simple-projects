@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class selectionSortwithRecursion {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int[] arr = {7, 6, 5, 4, 3, 2, 1};
+        int[] arr = {7, 6, 5, -10, -1, 3, 0, 4, 3, 2, 1};
 
         selectionSort(arr);
         
@@ -21,17 +21,19 @@ public class selectionSortwithRecursion {
             // find smallest number
 
             int smallest = array[start];
+            int index = start;
             for(int i = start; i <= end; i++) {
                 if(array[i] < smallest){
                     smallest = array[i];
+                    index = i;
                 }
             }
 
             // swap
-            array[end] = array[start];
+            array[index] = array[start];
             array[start] = smallest;
 
-            selectionSort(array, start+1, end-1);
+            selectionSort(array, start+1, end);
         }
     }
 }
