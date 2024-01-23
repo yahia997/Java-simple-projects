@@ -1,0 +1,166 @@
+/*
+ * This is implementation of LinkedList in Java
+ * made by Yahya Mahmoud Zakaria
+ * methods: 
+ *  - printList - insertBegining - insertEnd - insertMiddle - DeleteFirst
+ *  - DeleteLast - delete
+ */
+
+public class LinkedList<T> {
+  // head of the list
+  Node<T> head;
+
+  // inner class (node class)
+  static class Node<T> {
+    T data;
+    Node<T> next;
+
+    // constructor method
+    public Node(T data) {
+      this.data = data;
+
+      // next node is null by default
+      this.next = null;
+    }
+  }
+
+  // prints all nodes of the LinkedList
+  public void printList(LinkedList<T> list) {
+    Node<T> currentNode = list.head;
+    
+    while (currentNode != null) {
+      // Print node data
+      System.out.println(currentNode.data);
+
+      // go to next node
+      currentNode = currentNode.next;
+    }
+  }
+
+  
+  public void insertBegining(LinkedList<T> list, T data) {
+    // create new node
+    Node<T> newNode = new Node<T>(data);
+    newNode.next = list.head;
+
+    // change the head to new Node
+    list.head = newNode;
+  }
+
+  public void insertEnd(LinkedList<T> list, T data) {
+    // create new node
+    Node<T> newNode = new Node<T>(data);
+
+    // if list is empty
+    if(list.head == null) {
+      list.head = newNode;
+    }else {
+      
+      // go to the end of the list and put new node
+      Node<T> currentNode = list.head;
+      while (currentNode.next != null) {
+        currentNode = currentNode.next;
+      }
+
+      currentNode.next = newNode;
+    }
+
+  }
+
+  public void insertMiddle(LinkedList<T> list, T data,int index) {
+    // create new node
+    Node<T> newNode = new Node<T>(data);
+
+    if(index < 0) {
+      System.out.println("This index is out of range");
+      return;      
+    }
+
+    // if the user will insert at index 0
+    if(index == 0) {
+      newNode.next = list.head;
+      list.head = newNode;
+    }else {
+
+      // go to the specified position and put new node
+      Node<T> currentNode = list.head;
+      int counter = 0;
+
+      while (counter < index-1) { // go to previous position
+        currentNode = currentNode.next;
+        counter++;
+
+        // index not found
+        if(currentNode == null) {
+          System.out.println("This index is out of range");
+          return;
+        }
+      }
+
+      newNode.next = currentNode.next;
+      currentNode.next = newNode;      
+    }
+  }
+
+  public void DeleteFirst(LinkedList<T> list) {
+    // if head is empty
+    if(list.head == null) {
+      System.out.println("list is empty");
+      return;
+    }
+
+    list.head = list.head.next;
+  }
+
+  public void DeleteLast(LinkedList<T> list) {
+    // if head is empty
+    if(list.head == null) {
+      System.out.println("list is empty");
+      return;
+    }
+
+    Node<T> currentNode = list.head;
+
+    // go to the node that is previous the last node
+    while (currentNode.next.next != null) {
+      currentNode = currentNode.next;
+    }
+
+    currentNode.next = null;
+  }
+
+  public void delete(LinkedList<T> list, int index) {
+    // if head is empty
+    if(list.head == null) {
+      System.out.println("list is empty");
+      return;
+    }
+    
+    // go to the specified position and delete the node
+    Node<T> currentNode = list.head;
+    int counter = 0;
+
+    while (counter < index-1) { // go to previous position
+      currentNode = currentNode.next;
+      counter++;
+    
+      // index not found
+      if(currentNode.next == null) {
+        System.out.println("This index is out of range");
+        return;
+      }
+    }
+
+    currentNode.next = currentNode.next.next;    
+  }
+
+  public static void main(String[] args) {
+    LinkedList<Integer> list = new LinkedList<Integer>();
+    list.insertBegining(list, 1);
+    list.insertBegining(list, 2);
+    list.insertBegining(list, 3);
+    list.insertBegining(list, 4);
+    list.insertMiddle(list, 100000, 3);
+    list.printList(list);
+  }
+}
