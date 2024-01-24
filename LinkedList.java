@@ -1,9 +1,10 @@
 /*
- * This is implementation of LinkedList in Java
+ * This is an implementation of LinkedList in Java
  * made by Yahya Mahmoud Zakaria
  * methods: 
  *  - printList - insertBegining - insertEnd - insertMiddle - DeleteFirst
- *  - DeleteLast - delete
+ *  - DeleteLast - delete - printReversed - insertInSortedList - mergeLists
+ *  
  */
 
 public class LinkedList<T> {
@@ -154,13 +155,79 @@ public class LinkedList<T> {
     currentNode.next = currentNode.next.next;    
   }
 
+  // in a reverse order using recursion (tail recursion) This is insane
+  public void printReversed(Node<T> node) {
+    if(node != null) {
+      printReversed(node.next);
+      System.out.println(node.data);
+    }
+  }
+
+  // type of linkedList has to be Integer
+  public void insertInSortedList(LinkedList<Integer> list,int data) {
+    Node<Integer> newNode = new Node<Integer>(data);
+    
+    if(list.head == null) { // list is empty
+      list.head = newNode;
+    }else if(list.head.data > data) { // at the beginning of the list (smaller than all nodes)
+      newNode.next = list.head;
+      list.head = newNode;
+    }else {
+      
+      Node<Integer> prev = list.head;
+      Node<Integer> currentNode = list.head.next;
+      
+
+      while (currentNode.data < data) {
+        prev = currentNode;
+        currentNode = currentNode.next;
+
+        if(currentNode == null) { // at the end of the list (greater than all nodes)
+          prev.next = newNode;
+          break;
+        }
+      }
+
+      newNode.next = currentNode;
+      prev.next = newNode;
+    }
+  }
+
+  public LinkedList<T> mergeLists(LinkedList<T> x, LinkedList<T> y) {
+    Node<T> currentNode = x.head;
+
+    if(currentNode == null) { // list x is empty so return list y
+      return y;
+    }else { // merge two lists
+
+      while(currentNode.next != null) {
+        currentNode = currentNode.next;
+      }
+
+      currentNode.next = y.head;
+
+      return x;
+    }
+
+  }
+
   public static void main(String[] args) {
-    LinkedList<Integer> list = new LinkedList<Integer>();
-    list.insertBegining(list, 1);
-    list.insertBegining(list, 2);
-    list.insertBegining(list, 3);
-    list.insertBegining(list, 4);
-    list.insertMiddle(list, 100000, 3);
-    list.printList(list);
+    LinkedList<Integer> list1 = new LinkedList<Integer>();
+    LinkedList<Integer> list2 = new LinkedList<Integer>();
+    list1.insertEnd(list1, 1);
+    list1.insertEnd(list1, 2);
+    list1.insertEnd(list1, 3);
+    list1.insertEnd(list1, 4);
+    list1.printList(list1);
+    System.out.println("--------------------------");
+    list2.insertEnd(list2, 0);
+    list2.insertEnd(list2, -1);
+    list2.insertEnd(list2, -2);
+    list2.insertEnd(list2, -3);
+    list2.insertEnd(list2, -4);
+    list2.printList(list2);
+    System.out.println("--------------------------");
+    LinkedList<Integer> list3 = list1.mergeLists(list1, list2);
+    list3.printList(list3);
   }
 }
