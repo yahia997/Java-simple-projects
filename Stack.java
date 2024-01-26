@@ -31,13 +31,13 @@ class StackArray {
 
   // add element to top of the stack
   public void push(int val) {
-    stackArray[++this.topIndex] = val;
+    this.stackArray[++this.topIndex] = val;
   }
 
   // return element from top of the stack without removing it
   public int peek() {
     if(this.isEmpty()) throw new EmptyStackException();
-    return stackArray[this.topIndex];
+    return this.stackArray[this.topIndex];
   }
 
   // return element from top of the stack and remove it
@@ -45,8 +45,8 @@ class StackArray {
     if(this.isEmpty() == true) {
       throw new EmptyStackException();
     }else {
-      int copy = stackArray[this.topIndex];
-      stackArray[this.topIndex] = 0;
+      int copy = this.stackArray[this.topIndex];
+      this.stackArray[this.topIndex] = 0;
       this.topIndex--;
       return copy;
     }
