@@ -57,8 +57,9 @@ public class BinaryTree {
     }
   }
 
-  //  displays the tree using-breadth first search (BFS) traversal (prints to the console)
+  // displays the tree using-breadth first search (BFS) traversal (prints to the console)
   public void BFS(Node node) {
+    if(node == null) return; // if tree is empty
     Queue<Node> queue = new LinkedList<>();
     queue.add(node);
 
@@ -70,26 +71,106 @@ public class BinaryTree {
     }
   }
 
+  // Add a node to the tree with a value of key
+  public void insert(int key, Node root) {
+    // tree is empty
+    if(root == null) {
+      this.root = new Node(key);
+      return;
+    }
+    
+    if(root.left == null && root.val > key) {// insert to left
+      root.left = new Node(key);
+      return;
+    
+    }else if(root.right == null && root.val < key) {// insert to left
+      root.right = new Node(key);
+      return;
+
+    }else if(root.val < key) // go to right
+      insert(key, root.right);
+    else if(root.val > key) // go to left
+      insert(key, root.left);
+  }
+
+  // Find a node in the tree with a value of key
+  public boolean search(int key, Node root) {
+    if(root == null) return false;
+    if(key == root.val) return true;
+    else if(root.val > key)
+      return search(key, root.left);
+    else
+      return search(key, root.right);
+  }
+
+  // find minimum value in a tree or subtree
+  public Node findMin(Node root) {
+    if(root.left == null) return root;
+    return findMin(root.left);
+  }
+
+  // Delete a node in the tree with a value of key
+  public Node delete(int key, Node root) {
+    if(root == null) return root; // tree is empty
+    else if(root.val > key) 
+      return delete(key, root.left); // go to right
+    else if(root.val < key)
+      return delete(key, root.right); // go to left
+    else { // find the node to delete
+
+      // case I: leaf node
+      if(root.right == null && root.left == null ) {
+        root = null;
+      }
+
+      // case II: has one child
+      // has only left child
+      else if(root.right == null) {
+        Node temp = root;
+        root = temp.left;
+        temp = null;
+        
+      }
+
+      // has only right child
+      else if(root.left == null) {
+        Node temp = root;
+        root = temp.right;
+        temp = null;
+      }
+
+      // case III: has two children
+      else  {
+        Node temp = findMin(root.right);
+        root.val = temp.val;
+        delete(temp.val, root.right);
+        temp = null;
+      }
+
+      return this.root;
+    }
+  }
 
   public static void main(String[] args) {
-    BinaryTree tree = new BinaryTree();
+    BinaryTree tree2 = new BinaryTree();
 
-    // create my tree
-    tree.root = new Node(1);
-    tree.root.left = new Node(2);
-    tree.root.left.left = new Node(4);
-    tree.root.left.right = new Node(5);
-    tree.root.right = new Node(3);
+    tree2.insert(1, tree2.root);
+    tree2.insert(2, tree2.root);
+    tree2.insert(4, tree2.root);
+    tree2.insert(5, tree2.root);
+    tree2.insert(3, tree2.root);
 
+    tree2.delete(-1, tree2.root);
 
-    // System.out.println(tree.getLeavesCount(tree.root));
-    tree.inorder(tree.root);
+    tree2.inorder(tree2.root);
     System.out.println("--------------------");
-    tree.postorder(tree.root);
+    tree2.postorder(tree2.root);
     System.out.println("--------------------");
-    tree.preorder(tree.root);
+    tree2.preorder(tree2.root);
     System.out.println("--------------------");
-    tree.BFS(tree.root);
+    tree2.BFS(tree2.root);
+
+    System.out.println(tree2.search(3, tree2.root));
   }
   
 }
